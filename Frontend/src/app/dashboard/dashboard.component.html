@@ -1,0 +1,55 @@
+<div class="dashboard-container">
+  <!-- Linke Seite: Statistiken + Chart -->
+  <div class="left-section">
+    <!-- Statistiken -->
+    <div class="summary-boxes">
+      <div class="summary-item">
+        <h4>Kontostand</h4>
+        <p [ngClass]="{ positive: balance >= 0, negative: balance < 0 }">
+          {{ balance | currency : "EUR" }}
+        </p>
+      </div>
+      <div class="summary-item">
+        <h4>Einnahmen</h4>
+        <p class="positive">{{ totalIncome | currency : "EUR" }}</p>
+      </div>
+      <div class="summary-item">
+        <h4>Ausgaben</h4>
+        <p class="negative">{{ totalExpenses | currency : "EUR" }}</p>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-section">
+      <canvas
+        baseChart
+        [type]="chartType"
+        [data]="chartData"
+        [options]="chartOptions"
+      ></canvas>
+    </div>
+  </div>
+
+  <!-- Rechte Seite: Transaktionen -->
+  <div class="transaction-section">
+    <h3>Neueste Transaktionen</h3>
+    <table class="transaction-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Datum</th>
+          <th>Betrag</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of latestTransactions">
+          <td>{{ tx.description }}</td>
+          <td>{{ tx.date | date : "dd.MM.yyyy" }}</td>
+          <td [ngStyle]="{ color: tx.type === 'INCOME' ? 'green' : 'red' }">
+            {{ tx.amount | currency : "EUR" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

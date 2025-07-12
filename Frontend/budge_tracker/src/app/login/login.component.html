@@ -1,0 +1,43 @@
+<div *ngIf="isVisible">
+  <div class="modal-overlay" (click)="close()"></div>
+  <div class="login-modal">
+    <div class="login-modal" *ngIf="isVisible">
+      <h2 *ngIf="!isRegistering">Login</h2>
+      <h2 *ngIf="isRegistering">Registrieren</h2>
+
+      <form (ngSubmit)="onSubmit()">
+        <label for="email">E-Mail</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+
+        <label for="password">Passwort</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+
+        <button type="submit">
+          {{ isRegistering ? "Registrieren" : "Login" }}
+        </button>
+      </form>
+
+      <p (click)="toggleMode()" class="toggle-link">
+        {{
+          isRegistering
+            ? "Schon ein Konto? Jetzt einloggen"
+            : "Noch kein Konto? Jetzt registrieren"
+        }}
+      </p>
+
+      <button (click)="close()">Schließen</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<nav class="navbar">
+  <div class="brand">
+    <span class="icon">💰</span>
+    <span class="title">BudgetTracker</span>
+  </div>
+  <div class="actions">
+    <button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
+    <a *ngIf="!isLoggedIn" (click)="openLoginModal()" class="login-link">Login</a>
+  </div>
+</nav>
