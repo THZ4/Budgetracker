@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
 
-  private final String SECRET = "mein-geheimes-jwt-passwort-mehr-als-32-zeichen";
+  private final String SECRET =
+    "mein-geheimes-jwt-passwort-mehr-als-32-zeichen";
   private final long EXPIRATION_TIME = 86400000; // 24 Stunden
+  // private final long EXPIRATION_TIME = 100; // 
 
   private Key getSigningKey() {
     return Keys.hmacShaKeyFor(SECRET.getBytes());
