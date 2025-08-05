@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BudgetrackerApplication<budgetracker>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "de.example.budgetracker.BudgetrackerApplication",
+            "projectName": "budgetracker",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
