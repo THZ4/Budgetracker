@@ -92,3 +92,29 @@
   width: 100% !important;
   height: auto !important;
 }
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 1rem 0.75rem;
+}
+
+.transaction-header select {
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+@media (max-width: 600px) {
+  .transaction-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .transaction-header select {
+    width: 100%;
+  }
+}

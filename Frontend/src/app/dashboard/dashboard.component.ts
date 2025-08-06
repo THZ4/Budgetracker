@@ -3,13 +3,14 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ChartOptions, ChartData } from 'chart.js';
 import { Transaction, TransactionService } from '../transaction.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [BaseChartDirective, CommonModule],
+  imports: [BaseChartDirective, CommonModule, FormsModule],
 })
 export class DashboardComponent implements OnInit {
   chartType: 'bar' = 'bar';
@@ -63,20 +64,26 @@ export class DashboardComponent implements OnInit {
   totalIncome = 0;
   totalExpenses = 0;
   balance = 0;
+  selectedFilter: 'ALL' | 'INCOME' | 'EXPENSE' = 'ALL';
+  filteredTransactions: Transaction[] = [];
 
   ngOnInit(): void {
     this.txService.getAll().subscribe((transactions: Transaction[]) => {
       const incomePerMonth = Array(12).fill(0);
       const expensePerMonth = Array(12).fill(0);
+      this.totalIncome = 0;
+      this.totalExpenses = 0;
 
       transactions.forEach((tx) => {
         const month = new Date(tx.date).getMonth();
-        const type = (tx as any).type?.toUpperCase();
+        const type = tx.type?.toUpperCase();
 
         if (type === 'INCOME') {
           incomePerMonth[month] += tx.amount;
+          this.totalIncome += tx.amount;
         } else if (type === 'EXPENSE') {
           expensePerMonth[month] += tx.amount;
+          this.totalExpenses += tx.amount;
         }
       });
 
@@ -87,28 +94,25 @@ export class DashboardComponent implements OnInit {
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, 10);
 
-      this.totalIncome = 0;
-      this.totalExpenses = 0;
-
-      transactions.forEach((tx) => {
-        const month = new Date(tx.date).getMonth();
-        const type = tx.type?.toUpperCase();
-
-        if (type === 'INCOME') {
-          this.totalIncome += tx.amount;
-          incomePerMonth[month] += tx.amount;
-        } else if (type === 'EXPENSE') {
-          this.totalExpenses += tx.amount;
-          expensePerMonth[month] += tx.amount;
-        }
-      });
-
       this.balance = this.totalIncome - this.totalExpenses;
+
+      this.filterTransactions();
 
       this.chart?.update();
     });
   }
+
   getColor(type: string): string {
     return type === 'INCOME' ? 'green' : 'red';
+  }
+
+  filterTransactions() {
+    if (this.selectedFilter === 'ALL') {
+      this.filteredTransactions = [...this.latestTransactions];
+    } else {
+      this.filteredTransactions = this.latestTransactions.filter(
+        (tx) => tx.type === this.selectedFilter
+      );
+    }
   }
 }
